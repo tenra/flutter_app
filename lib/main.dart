@@ -48,45 +48,52 @@ class MyHomePage extends StatefulWidget {
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+// import,main関数,MyAppクラス,MyHomePageクラスはデフォルトのままのため省略
 
-  void _incrementCounter() {
+class _MyHomePageState extends State<MyHomePage> {
+  bool _flag = false;
+
+  _click() async {
     setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-      print("Hell World");
+      _flag = !_flag;
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     return Scaffold(
       appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
         title: Text(widget.title),
       ),
-      body: const Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Icon(FontAwesomeIcons.gift, color: Colors.teal),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            AnimatedOpacity(
+                opacity: _flag ? 0.1 : 1.0,
+                duration: const Duration(seconds: 3),
+                child: Text(
+                  "消える文字",
+                  style: Theme.of(context).textTheme.headline4,
+                )),
+            AnimatedSize(
+                duration: const Duration(seconds: 3),
+                child: SizedBox(
+                    width: _flag ? 50 : 200,
+                    height: _flag ? 50 : 200,
+                    child: Container(color: Colors.purple))),
+            AnimatedAlign(
+                duration: const Duration(seconds: 3),
+                alignment: _flag ? Alignment.topLeft : Alignment.bottomRight,
+                child: SizedBox(
+                    width: 50,
+                    height: 50,
+                    child: Container(color: Colors.green)))
+          ],
+        ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      floatingActionButton:
+        FloatingActionButton(onPressed: _click, child: const Icon(Icons.add)),
     );
   }
 }
